@@ -91,35 +91,45 @@ void main(){  //ฟังก์ชันหลัก
         if(x>3) d[i]=(i>>(x-4)) &1;
         if(x>4) e[i]=(i>>(x-5)) &1;
     }
+
     for(int i=0;i<x;i++){
         printf("%c ",'A'+i);
-    }printf("%2c\n",'F');
-    
-    int count_min=0,count_max=0;
-    int a_min[32],a_max[32];
 
-    for(int i=0;i<rowe;i++){
+    }printf("%5c\n",'F');
+    
+    int count_min=0, count_max=0;
+    int a_min[32], a_max[32];
+
+    for(int i=0; i<rowe; i++){
         int result=0;
         result=Solution(equation,a[i],b[i],c[i],d[i],e[i]);
+
         for(int j=0;j<x;j++){
             printf("%d ",(i>>(x-j-1)) &1);
         }
 
-        if(result==1){
-            printf("% d <",result,i);
-            a_min[count_min++]=i;
-        }else if(result==0){
-            printf("% d ",result,i);
-            a_max[count_max++]=i;
+        if(result == 1){
+            printf(" %2d %d <",i,result);
+            a_min[count_min++] = i;
+
+        }
+        else if(result == 0){
+            printf(" %2d %d ",i,result);
+            a_max[count_max++] = i;
+        }
+        if((i+1)%4==0){
+            printf("\n——————————");
         }
         printf("\n");
     }
     printf("Mintrem => ");
-    for(int i=0;i<count_min;i++){
+    for(int i = 0;i<count_min; i++){
         printf("%d ",a_min[i]);
+
     }printf("\n");
+
     printf("Maxterm => ");
-    for(int i=0;i<count_max;i++){
+    for(int i = 0; i<count_max;  i++){
         printf("%d ",a_max[i]);
     }
 
