@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<math.h>
-#include<string.h>
 #include<ctype.h>
 #define MAX 100
 
@@ -49,11 +48,12 @@ int Solution(char *eq,int a,int b,int c,int d, int e){
     }
     while(top!=-1){
         str[++topstr]=pop();
-        
+
     }
+
     for(int i=0;i<=topstr;i++){
         char ch=str[i];
-        if(ch=='a'||ch=='b'||ch=='c'||ch=='d'||ch=='e'){
+        if(isalpha(ch)){
             int value=0;
             if(ch=='a') value=a;
             else if(ch=='b') value=b;
@@ -76,9 +76,11 @@ void main(){  //ฟังก์ชันหลัก
     int x;
     printf("How many variable => ");
     scanf("%d",&x);
+
     char equation[50];
-    printf("Input Boolean (Ex. (a.b)+c or (w+y).x ): ");
+    printf("Input Boolean (Ex. (a.b)+c or (w+y).x ) => ");
     scanf("%s",equation);
+
     int rowe=(int)pow(2,x);
     int a[32]={0},b[32]={0},c[32]={0},d[32]={0},e[32]={0};
     // ใส่ค่าาในตาราง
@@ -89,12 +91,36 @@ void main(){  //ฟังก์ชันหลัก
         if(x>3) d[i]=(i>>(x-4)) &1;
         if(x>4) e[i]=(i>>(x-5)) &1;
     }
+    for(int i=0;i<x;i++){
+        printf("%c ",'A'+i);
+    }printf("%2c\n",'F');
+    
+    int count_min=0,count_max=0;
+    int a_min[32],a_max[32];
+
     for(int i=0;i<rowe;i++){
         int result=0;
         result=Solution(equation,a[i],b[i],c[i],d[i],e[i]);
-        printf("%d\n",result);
+        for(int j=0;j<x;j++){
+            printf("%d ",(i>>(x-j-1)) &1);
+        }
+
+        if(result==1){
+            printf("% d <",result,i);
+            a_min[count_min++]=i;
+        }else if(result==0){
+            printf("% d ",result,i);
+            a_max[count_max++]=i;
+        }
+        printf("\n");
+    }
+    printf("Mintrem => ");
+    for(int i=0;i<count_min;i++){
+        printf("%d ",a_min[i]);
+    }printf("\n");
+    printf("Maxterm => ");
+    for(int i=0;i<count_max;i++){
+        printf("%d ",a_max[i]);
     }
 
-    
-   
 }
