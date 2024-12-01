@@ -6,7 +6,7 @@ public class TruthTable {
    static  int[] stack = new int[MAX];
    static  int top=-1;
    
-    static void push(int value){
+    static void push(int value){    
         if((top+1)<MAX){
             stack[++top]=value;
         }
@@ -16,14 +16,14 @@ public class TruthTable {
             return  stack[top--];
         }return 0;
     }
-    static int Operator(int str1,int str2,char op){
+    static int Operator(int str1,int str2,char op){  
         if(op == '.'){
             return str1 & str2;
 
         }else if(op == '+'){
             return str1 | str2;
 
-        }else if(op == '0'){
+        }else if(op == '*'){
             return str1 ^ str2; 
 
         }
@@ -45,6 +45,10 @@ public class TruthTable {
             }
             else if(B.charAt(i)=='e'){str[++topstr]='e';
             }
+            else if(B.charAt(i)=='1'){str[++topstr]='1';
+            }
+            else if(B.charAt(i)=='0'){str[++topstr]='0';
+            }
             else if(B.charAt(i)=='f'){str[++topstr]='f';
             }
             else if(B.charAt(i)=='('){push('(');
@@ -55,7 +59,7 @@ public class TruthTable {
             }
             else if(B.charAt(i)=='+'){ push('+'); //OR
             }
-            else if(B.charAt(i)=='0'){ push('0'); //XOR
+            else if(B.charAt(i)=='*'){ push('*'); //XOR
             }
             else if(B.charAt(i)==')'){
                 while(top!=-1 && stack[top]!='('){
@@ -69,7 +73,7 @@ public class TruthTable {
 
             char ch = (char)str[i];
 
-            if(Character.isLetter(ch)){
+            if(Character.isLetter(ch) || Character.isDigit(ch)){
                 int value=0;
                 if(ch == 'a') {value = a;}
                 else if(ch == 'b') {value = b;}
@@ -77,13 +81,15 @@ public class TruthTable {
                 else if(ch == 'd') {value = d;}
                 else if(ch == 'e') {value = e;}
                 else if(ch == 'f') {value = f;}
+                else if(ch == '1') {value = 1;}
+                else if(ch == '0') {value = 0;}
                 push(value);
 
             }else if(ch == '\'') {
                 int not_ = pop();
                 push(not_ == 0 ? 1 : 0 );
 
-            }else if(ch == '.' || ch == '+' || ch == '0' || ch == '*'){
+            }else if(ch == '.' || ch == '+' || ch == '*'){
                 int str2 = pop();
                 int str1 = pop();
                 push(Operator(str1,str2,ch));
@@ -101,7 +107,7 @@ public class TruthTable {
 
         sn.nextLine();
         System.out.println("");
-        System.out.println("Operator (and = .) (or = +) (not = ') (xor = 0) (xnor = (xor)' )");
+        System.out.println("Operator (and = .) (or = +) (not = ') (xor = *) (xnor = (xor)' )");
         System.out.println("Ex.1 (a.b)+c' \nEx.2 (b0d)'.e \nEx.3 (w0x).(y+z)");
 
         System.out.print("Input Boolean Expression => ");
@@ -120,6 +126,7 @@ public class TruthTable {
         int [] a_max = new int [rowe];
 
         for(int i=0; i<rowe; i++){
+            
             a = (i >> (x-1)) &1 ;
             if(x>1) b = (i >> (x-2)) &1 ;
             if(x>2) c = (i >> (x-3)) &1 ;
@@ -134,14 +141,12 @@ public class TruthTable {
             }
             
             if(result == 1){
-                c_min++;
                 System.out.printf("(%2d) %d <\n",i,result);
-                a_min[c_min] = i;
+                a_min[++c_min] = i;
 
             }else if(result == 0){
-                c_max++;
                 System.out.printf("(%2d) %d\n",i,result);
-                a_max[c_max] = i;
+                a_max[++c_max] = i;
             }
 
             if((i+1)%4 == 0){System.out.println("");}
